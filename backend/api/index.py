@@ -8,12 +8,27 @@ from dotenv import load_dotenv
 load_dotenv()
 
 app = Flask(__name__)
-# Allow CORS from a specific frontend URL if defined in .env, otherwise allow all
-frontend_url = os.getenv("FRONTEND_URL", "*")
-CORS(app, resources={r"/*": {"origins": frontend_url}})
 
-@app.route('/cluster', methods=['POST'])
+# Improved CORS handling
+frontend_url = os.getenv("FRONTEND_URL", "*")
+# If frontend_url is a comma-separated list, split it
+origins = [url.strip() for url in frontend_url.split(",")] if frontend_url != "*" else "*"
+
+CORS(app, resources={r"/*": {
+    "origins": origins,
+    "methods": ["GET", "POST", "OPTIONS"],
+    "allow_headers": ["Content-Type", "Authorization"]
+}})
+
+@app.route('/')
+def health_check():
+    return jsonify({"status": "healthy", "message": "OPTICS Clustering API is running"}), 200
+
+@app.route('/cluster', methods=['POST', 'OPTIONS'])
 def cluster():
+    if request.method == 'OPTIONS':
+        return '', 204
+        
     if 'file' not in request.files:
         return jsonify({"error": "No file uploaded"}), 400
     
