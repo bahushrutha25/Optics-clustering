@@ -1,11 +1,11 @@
 # OPTICS Clustering Dashboard 🚀
 
-A modern, full-stack application for performing and visualizing **OPTICS** clustering. This project is split into a Python Flask backend and a Vite-powered frontend.
+A modern, full-stack application for performing and visualizing **OPTICS** clustering. This project features a Python Flask backend and a React (Vite) frontend, both optimized for deployment on Vercel.
 
 ## 📁 Project Structure
 
-- **`frontend/`**: Vanilla JavaScript + Vite dashboard.
-- **`backend/`**: Python Flask API for machine learning processing.
+- **`frontend/`**: React + Vite + Plotly.js dashboard.
+- **`backend/`**: Python Flask API using Scikit-Learn.
 
 ---
 
@@ -15,49 +15,41 @@ A modern, full-stack application for performing and visualizing **OPTICS** clust
 ```bash
 cd backend
 pip install -r requirements.txt
-python index.py
+python api/index.py
 ```
-*Access API at: `http://localhost:5000`*
+*API running at: `http://localhost:5000`*
 
-### **2. Frontend (Vite)**
+### **2. Frontend (React)**
 ```bash
 cd frontend
 npm install
 npm run dev
 ```
-*Access Dashboard at: `http://localhost:5173`*
+*Dashboard running at: `http://localhost:5173`*
 
 ---
 
 ## 🌐 Deployment (Vercel)
 
-Both parts are independently deployable to Vercel.
+The project is pre-configured for independent deployment on Vercel.
 
 ### **Deploy Backend**
 1. `cd backend`
 2. `vercel`
+3. Set `FRONTEND_URL` in Vercel environment variables to your frontend URL.
 
 ### **Deploy Frontend**
 1. `cd frontend`
 2. `vercel`
-
----
-
-## ⚙️ Environment Variables
-
-Copy `.env.example` to `.env` in both folders and update the values:
-
-- **Backend (`backend/.env`)**:
-  - `FRONTEND_URL`: The URL of your deployed frontend (for CORS).
-- **Frontend (`frontend/.env`)**:
-  - `VITE_API_URL`: The URL of your deployed backend API.
+3. Set `VITE_API_URL` in Vercel environment variables to your backend URL.
 
 ---
 
 ## ✨ Features
 
 - **Interactive Clustering**: Adjust `min_samples` and see real-time updates.
+- **React-Powered UI**: Fast, component-based dashboard.
 - **High-Performance Visualization**: Powered by Plotly.js.
 - **Anomaly Detection**: Highlights outliers automatically.
-- **Data Export**: Download results directly as a CSV.
-- **Secure**: CORS and Environment Variable support.
+- **Data Export**: Download processed results as a CSV.
+- **Vercel Ready**: Optimized configurations for serverless deployment.
