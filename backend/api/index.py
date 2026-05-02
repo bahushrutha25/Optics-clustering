@@ -1,5 +1,4 @@
 from flask import Flask, request, jsonify
-from flask_cors import CORS
 import pandas as pd
 from sklearn.cluster import OPTICS
 import os
@@ -9,20 +8,18 @@ load_dotenv()
 
 app = Flask(__name__)
 
-# Improved CORS handling
-frontend_url = os.getenv("FRONTEND_URL", "*")
-# If frontend_url is a comma-separated list, split it
-origins = [url.strip() for url in frontend_url.split(",")] if frontend_url != "*" else "*"
-
-CORS(app, resources={r"/*": {
-    "origins": origins,
-    "methods": ["GET", "POST", "OPTIONS"],
-    "allow_headers": ["Content-Type", "Authorization"]
-}})
+# Explicitly handle CORS headers for all responses
+@app.after_request
+def add_cors_headers(response):
+    # Allow all origins for debugging, or replace with specific origin
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+    response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
+    return response
 
 @app.route('/')
 def health_check():
-    return jsonify({"status": "healthy", "message": "OPTICS Clustering API is running"}), 200
+    return jsonify({"status": "healthy", "message": "API is running"}), 200
 
 @app.route('/cluster', methods=['POST', 'OPTIONS'])
 def cluster():
